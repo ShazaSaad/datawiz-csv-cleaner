@@ -26,6 +26,17 @@ namespace DataWiz
         public MainWindow()
         {
             InitializeComponent();
+            var frame = new Frame();
+            Content = frame;
+        frame.Navigate(typeof(DataWiz.Views.MainPage));
+
+        // After navigation, the Page instance will be created as the frame content.
+        // Assign the HostWindow on the page's ViewModel here so it gets a valid Window instance
+        // (avoids race condition where App.MainAppWindow may not be set yet).
+        if (frame.Content is DataWiz.Views.MainPage page)
+        {
+            page.ViewModel.HostWindow = this;
+        }
         }
     }
 }
