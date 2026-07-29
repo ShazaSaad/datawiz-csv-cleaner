@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DataWiz (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "DataWiz (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
