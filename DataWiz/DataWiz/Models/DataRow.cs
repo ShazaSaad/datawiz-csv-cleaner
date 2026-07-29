@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 
 namespace DataWiz.Models;
 
 public class DataRow
 {
-    // Column name -> raw cell value (keep as string; services interpret it)
     public Dictionary<string, string?> Cells { get; set; } = new();
 
     public bool IsFlaggedMissing { get; set; }
     public bool IsFlaggedOutlier { get; set; }
+
+    public Brush RowBackground =>
+        IsFlaggedOutlier
+            ? new SolidColorBrush(Colors.IndianRed) { Opacity = 0.3 }
+            : IsFlaggedMissing
+                ? new SolidColorBrush(Colors.Orange) { Opacity = 0.3 }
+                : new SolidColorBrush(Colors.Transparent);
 
     public string? this[string columnName]
     {

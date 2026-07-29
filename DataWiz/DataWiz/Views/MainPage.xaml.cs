@@ -15,6 +15,7 @@ using Windows.Foundation.Collections;
 using CommunityToolkit.WinUI.UI.Controls;
 using DataWiz.ViewModels;
 using System.ComponentModel;
+using DataWiz.Models;
 
 namespace DataWiz.Views;
 
@@ -30,10 +31,10 @@ public sealed partial class MainPage : Page
         if (columnInfo is not null)
             ViewModel.Inspector.SetColumn(columnInfo, ViewModel.CurrentDataset.RowCount);
     }
+    
     public MainPage()
     {
         InitializeComponent();
-        DataContext = ViewModel;
         // HostWindow is assigned by MainWindow after navigation to ensure a valid instance
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         DataGridControl.CurrentCellChanged += DataGridControl_CurrentCellChanged;

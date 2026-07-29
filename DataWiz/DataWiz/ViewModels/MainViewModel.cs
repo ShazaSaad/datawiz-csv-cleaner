@@ -18,8 +18,8 @@ namespace DataWiz.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly ICsvService _csvService = new CsvService();
-    // Add to MainViewModel fields
     private readonly IStatsService _statsService = new StatsService();
+    private readonly IOutlierService _outlierService = new OutlierService();
     public ColumnInspectorViewModel Inspector { get; } = new();
 
     private DatasetModel? currentDataset;
@@ -68,9 +68,20 @@ public partial class MainViewModel : ObservableObject
         if (CurrentDataset is not null)
             _statsService.ComputeStats(CurrentDataset);
 
+        // Flag outliers and missing values
+        _outlierService.FlagOutliers(CurrentDataset);
+        _outlierService.FlagMissing(CurrentDataset);
+
         Rows.Clear();
         foreach (var row in CurrentDataset.Rows)
             Rows.Add(row);
+
+        
+        // --- Temporary diagnostic ---
+        int outlierCount = CurrentDataset.Rows.Count(r => r.IsFlaggedOutlier);
+        int missingCount = CurrentDataset.Rows.Count(r => r.IsFlaggedMissing);
+        System.Diagnostics.Debug.WriteLine($"Flagged: {outlierCount} outliers, {missingCount} missing");
+        // ----------------------------
 
         StatusText = $"{CurrentDataset.FileName} — {CurrentDataset.RowCount} rows, {CurrentDataset.ColumnCount} columns";
     }

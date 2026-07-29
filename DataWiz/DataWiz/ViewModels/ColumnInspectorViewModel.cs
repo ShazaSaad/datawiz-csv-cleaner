@@ -27,11 +27,12 @@ public partial class ColumnInspectorViewModel : ObservableObject
 
     public double MissingPercentage =>
         SelectedColumn is null ? 0 : SelectedColumn.MissingPercentage(TotalRowCount);
-
+    public string MissingPercentageDisplay => $"{MissingPercentage:F1}%";
     public void SetColumn(ColumnInfo column, int totalRows)
     {
         SelectedColumn = column;
         TotalRowCount = totalRows;
         OnPropertyChanged(nameof(MissingPercentage));
+        OnPropertyChanged(nameof(MissingPercentageDisplay));
     }
 }
