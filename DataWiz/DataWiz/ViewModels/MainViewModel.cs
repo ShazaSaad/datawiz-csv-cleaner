@@ -18,6 +18,9 @@ namespace DataWiz.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly ICsvService _csvService = new CsvService();
+    // Add to MainViewModel fields
+    private readonly IStatsService _statsService = new StatsService();
+    public ColumnInspectorViewModel Inspector { get; } = new();
 
     private DatasetModel? currentDataset;
     public DatasetModel? CurrentDataset
@@ -60,6 +63,10 @@ public partial class MainViewModel : ObservableObject
 
         StatusText = "Loading...";
         CurrentDataset = await _csvService.LoadAsync(file.Path);
+
+        // Compute statistics for the loaded dataset
+        if (CurrentDataset is not null)
+            _statsService.ComputeStats(CurrentDataset);
 
         Rows.Clear();
         foreach (var row in CurrentDataset.Rows)

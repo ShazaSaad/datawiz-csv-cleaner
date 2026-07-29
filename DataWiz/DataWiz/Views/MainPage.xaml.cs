@@ -21,13 +21,23 @@ namespace DataWiz.Views;
 public sealed partial class MainPage : Page
 {
     public MainViewModel ViewModel { get; } = new();
+    private void DataGridControl_CurrentCellChanged(object? sender, EventArgs e)
+    {
+        var columnHeader = DataGridControl.CurrentColumn?.Header?.ToString();
+        if (columnHeader is null || ViewModel.CurrentDataset is null) return;
 
+        var columnInfo = ViewModel.CurrentDataset.Columns.FirstOrDefault(c => c.Name == columnHeader);
+        if (columnInfo is not null)
+            ViewModel.Inspector.SetColumn(columnInfo, ViewModel.CurrentDataset.RowCount);
+    }
     public MainPage()
     {
         InitializeComponent();
         DataContext = ViewModel;
         // HostWindow is assigned by MainWindow after navigation to ensure a valid instance
         ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        DataGridControl.CurrentCellChanged += DataGridControl_CurrentCellChanged;
+
     }
 
     private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

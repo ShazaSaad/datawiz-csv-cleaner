@@ -5,27 +5,130 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls">
 
-    <Grid Padding="16">
+    <Grid Padding="16" ColumnSpacing="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="260"/>
+        </Grid.ColumnDefinitions>
 
         <!-- Top bar -->
-        <StackPanel Orientation="Horizontal" Spacing="8" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" Spacing="8"
+                    Grid.Row="0" Grid.Column="0">
             <Button Content="Load CSV" Click="LoadButton_Click"/>
             <Button Content="Export CSV" Click="ExportButton_Click"/>
-            <TextBlock Text="{Binding StatusText}"
-                       VerticalAlignment="Center" Margin="12,0,0,0"/>
+            <TextBlock Text="{x:Bind ViewModel.StatusText, Mode=OneWay}"
+                       VerticalAlignment="Center" Margin="12,0,0,0"
+                       Opacity="0.7"/>
         </StackPanel>
 
         <!-- Data grid -->
         <controls:DataGrid x:Name="DataGridControl"
-                            Grid.Row="1"
+                            Grid.Row="1" Grid.Column="0"
                             Margin="0,12,0,0"
-                            ItemsSource="{Binding Rows}"
+                            ItemsSource="{x:Bind ViewModel.Rows}"
                             AutoGenerateColumns="False"
                             IsReadOnly="True"/>
+
+        <!-- Column Inspector panel -->
+        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                Margin="0,0,0,0"
+                Padding="16"
+                CornerRadius="8"
+                BorderThickness="1"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+
+            <StackPanel Spacing="10">
+                <TextBlock Text="Column Inspector"
+                           FontWeight="SemiBold" FontSize="16"/>
+
+                <TextBlock Text="{x:Bind ViewModel.Inspector.SelectedColumn.Name, Mode=OneWay}"
+                           FontWeight="SemiBold" FontSize="14"
+                           TextWrapping="Wrap"/>
+
+                <StackPanel Spacing="4">
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Type:" Opacity="0.6"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind ViewModel.Inspector.SelectedColumn.DataType, Mode=OneWay}"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Missing:" Opacity="0.6"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind ViewModel.Inspector.MissingPercentage, Mode=OneWay}"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Unique:" Opacity="0.6"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind ViewModel.Inspector.SelectedColumn.UniqueCount, Mode=OneWay}"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Min:" Opacity="0.6"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind ViewModel.Inspector.SelectedColumn.Min, Mode=OneWay}"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Max:" Opacity="0.6"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind ViewModel.Inspector.SelectedColumn.Max, Mode=OneWay}"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Mean:" Opacity="0.6"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind ViewModel.Inspector.SelectedColumn.Mean, Mode=OneWay}"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Median:" Opacity="0.6"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{x:Bind ViewModel.Inspector.SelectedColumn.Median, Mode=OneWay}"
+                                   HorizontalAlignment="Right"/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>
